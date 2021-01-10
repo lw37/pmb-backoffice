@@ -4,11 +4,11 @@ import { TabMenu } from 'primereact/tabmenu';
 export const Menu = () => {
 
     const items = [
-        {label: 'Home', icon: 'pi pi-fw pi-home'},
-        {label: 'Calendar', icon: 'pi pi-fw pi-calendar'},
-        {label: 'Edit', icon: 'pi pi-fw pi-pencil'},
-        {label: 'Documentation', icon: 'pi pi-fw pi-file'},
-        {label: 'Settings', icon: 'pi pi-fw pi-cog'}
+        {label: 'Usuarios', icon: 'pi pi-user-edit'},
+        {label: 'Apuestas', icon: 'pi pi-fw pi-table'},
+        {label: 'Eventos', icon: 'pi pi-fw pi-table'},
+        {label: 'Informes', icon: 'pi pi-fw pi-eye'}
+      
     ];
 
     return (
