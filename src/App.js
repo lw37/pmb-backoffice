@@ -3,6 +3,7 @@ import React, { Fragment } from 'react';
 import { TabMenu } from 'primereact/tabmenu';
 class App extends React.Component {
   state={
+    MenuNom:"Usuarios",
     showUsuarios:true,
     showApuestas:false,
     showEventos:false,
@@ -19,23 +20,26 @@ class App extends React.Component {
       
     return (
       <>
-        <TabMenu model={this.state.items}  />
-        <Fragment>
-     
-        <Fragment>
-
-        </Fragment>
-
-        </Fragment>
-        <Fragment>
-
-        </Fragment>
-        <Fragment>
-
-        </Fragment>
+        <TabMenu model={this.state.items} onTabChange={(e) => this.setState({MenuNom: e.value.label},()=>{console.log(this.state.MenuNom)})}/>
+        {this.state.MenuNom==='Usuarios' && this.renderTablaUsuarios()}
+        {this.state.MenuNom==='Apuestas'?<Fragment>
+          <p>Aqui es tabla de Apuestas</p>
+        </Fragment>:null}
+        {this.state.MenuNom==='Eventos'?<Fragment>
+          <p>Aqui es tabla de Eventos</p>
+        </Fragment>:null}
+        {this.state.MenuNom==='Informes'?<Fragment>
+          <p>Aqui es tabla de Informes</p>
+        </Fragment>:null}
       </>
     );
   }
+  renderTablaUsuarios=()=>(
+<Fragment>
+          <p>Aqui es tabla de usarios</p>
+        </Fragment>
+  );
+
 }
 
 export default App;
