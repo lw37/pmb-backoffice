@@ -16,7 +16,7 @@ export default class TablaUsuarios extends React.Component {
   render() {
     return (
       <>
-      <label> Email: </label>
+        <label> Email: </label>
         <span className="p-input-icon-left">
           <i className="pi pi-search" />
           <InputText onChange={this.filtroEmail} placeholder="Search" />
@@ -24,7 +24,7 @@ export default class TablaUsuarios extends React.Component {
         <label> Nombre: </label>
         <span className="p-input-icon-left">
           <i className="pi pi-search" />
-          <InputText onChange={this.filtroNombre}  placeholder="Search" />
+          <InputText onChange={this.filtroNombre} placeholder="Search" />
         </span>
         <label> Apellido: </label>
         <span className="p-input-icon-left">
@@ -45,41 +45,41 @@ export default class TablaUsuarios extends React.Component {
       </>
     )
   }
-  
+
   filtroEmail = (evento) => {
-    this.setState({ textoEmail: evento.target.value }, () => {this.filtro()});
+    this.setState({ textoEmail: evento.target.value }, () => { this.filtro() });
   }
 
   filtroNombre = (evento) => {
-    this.setState({ textoNombre: evento.target.value }, () => {this.filtro()});
+    this.setState({ textoNombre: evento.target.value }, () => { this.filtro() });
   }
 
   filtroApellido = (evento) => {
-    this.setState({ textoApellido: evento.target.value }, () => {this.filtro()});
+    this.setState({ textoApellido: evento.target.value }, () => { this.filtro() });
   }
 
   filtro = () => {
     if (this.state.textoEmail !== "") {
-     const lista= this.state.usuarios.filter(a=>a.Email===this.state.textoEmail)
-     this.setState({lista});
-    }else if (this.state.textoNombre !== "") {
-      const lista= this.state.usuarios.filter(a=>a.Nombre===this.state.textoNombre)
-      this.setState({lista});
+      const lista = this.state.usuarios.filter(a => a.Email === this.state.textoEmail)
+      this.setState({ lista });
+    } else if (this.state.textoNombre !== "") {
+      const lista = this.state.usuarios.filter(a => a.Nombre === this.state.textoNombre)
+      this.setState({ lista });
     }
-    else if (this.state.textoApellido !== ""){
-      const lista= this.state.usuarios.filter(a=>a.Apellido===this.state.textoApellido)
-      this.setState({lista});
-    }else{
+    else if (this.state.textoApellido !== "") {
+      const lista = this.state.usuarios.filter(a => a.Apellido === this.state.textoApellido)
+      this.setState({ lista });
+    } else {
       this.getUsuarios();
     }
-   
+
   }
 
   eliminar = (rowData) => {
     return <><button onClick={() => { this.delUsuario(rowData.UsuarioId) }}>eliminar</button></>
 
   }
-  
+
   delUsuario = (id) => {
     axios.delete("https://localhost:44315/api/usuarios/" + id);
   }
@@ -89,7 +89,7 @@ export default class TablaUsuarios extends React.Component {
     const promiseResult = promise.then(res => {
       const usuarios = res.data;
       console.log("Usuarios" + this.state.usuarios)
-      this.setState({ usuarios,lista:usuarios }, () => { console.log("Estos son usuarios"); console.log(usuarios); })
+      this.setState({ usuarios, lista: usuarios }, () => { console.log("Estos son usuarios"); console.log(usuarios); })
     });
   }
   componentDidUpdate() {
