@@ -33,10 +33,7 @@ export default class TablaUsuarios extends React.Component {
 
   delUsuario=(id)=>{
     axios.delete("https://localhost:44315/api/usuarios/"+id);
-    axios.get("https://localhost:44315/api/usuarios").then((res => {
-      const usuarios = res.data;
-      this.setState({ usuarios }, () => { console.log("Estos son usuarios"); console.log(usuarios); })
-  }))
+
      
   }
 
@@ -45,7 +42,6 @@ export default class TablaUsuarios extends React.Component {
     const promiseResult = promise.then(res => {
       const usuarios = res.data;
       console.log("Usuarios" + this.state.usuarios)
-      console.log(this.state.prueba)
       this.setState({ usuarios }, () => { console.log("Estos son usuarios"); console.log(usuarios); })
     });
   }
