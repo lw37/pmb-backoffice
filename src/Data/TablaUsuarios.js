@@ -9,11 +9,14 @@ export default class TablaUsuarios extends React.Component {
 
   state = {
     usuarios: [],
+    filtroTexto:"",
   }
   render() {
     return (
       <>
+          <input onChange={this.introducir}></input>
         <div>
+            
           <DataTable value={this.state.usuarios}>
             <Column field="Email" header="Email"></Column>
             <Column field="Nombre" header="Nombre"></Column>
@@ -27,14 +30,15 @@ export default class TablaUsuarios extends React.Component {
       </>
     )
   }
+
   eliminar = (rowData) => {
     return <><button onClick={()=>{this.delUsuario(rowData.UsuarioId)}}>eliminar</button></>
+  
   }
 
   delUsuario=(id)=>{
     axios.delete("https://localhost:44315/api/usuarios/"+id);
 
-     
   }
 
   getUsuarios = () => {
