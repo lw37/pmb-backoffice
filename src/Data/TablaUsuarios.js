@@ -4,6 +4,7 @@ import { DataTable } from 'primereact/datatable';
 import { Column } from 'primereact/column';
 
 
+
 export default class TablaUsuarios extends React.Component {
 
   state = {
@@ -14,37 +15,45 @@ export default class TablaUsuarios extends React.Component {
       <>
         <div>
           <DataTable value={this.state.usuarios}>
-            <Column field="UsuarioId" header="Email"></Column>
+            <Column field="Email" header="Email"></Column>
             <Column field="Nombre" header="Nombre"></Column>
             <Column field="Apellido" header="Apellido"></Column>
             <Column field="Edad" header="Edad"></Column>
             <Column field="FechaAlta" header="Fecha de Alta"></Column>
+            <Column body={this.eliminar} ></Column>
           </DataTable>
         </div>
-        <button onClick={this.getUsuarios}> actualizaar</button>
+        <button onClick={this.getUsuarios}> actualizar</button>
       </>
     )
+  }
+  eliminar = (rowData) => {
+    return <><button onClick={()=>{this.delUsuario(rowData.UsuarioId)}}>eliminar</button></>
+  }
+
+  delUsuario=(id)=>{
+    axios.delete("https://localhost:44315/api/usuarios/"+id);
+    axios.get("https://localhost:44315/api/usuarios").then((res => {
+      const usuarios = res.data;
+      this.setState({ usuarios }, () => { console.log("Estos son usuarios"); console.log(usuarios); })
+  }))
+     
   }
 
   getUsuarios = () => {
     const promise = axios.get("https://localhost:44315/api/usuarios");
     const promiseResult = promise.then(res => {
       const usuarios = res.data;
-      console.log("Usuarios"+this.state.usuarios)
+      console.log("Usuarios" + this.state.usuarios)
       console.log(this.state.prueba)
       this.setState({ usuarios }, () => { console.log("Estos son usuarios"); console.log(usuarios); })
     });
   }
-  componentDidUpdate(){
-
+  componentDidUpdate() {
+    
   }
   componentDidMount() {
-    const promise = axios.get("https://localhost:44315/api/usuarios");
-    const promiseResult = promise.then(res => {
-      const usuarios = res.data;
-      this.setState({ usuarios }, () => { console.log("Estos son usuarios"); console.log(usuarios); })
-
-    });
+      this.getUsuarios();
   }
 
 }

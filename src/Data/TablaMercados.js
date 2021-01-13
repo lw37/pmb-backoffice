@@ -1,8 +1,8 @@
+
 import React from 'react';
 import axios from 'axios';
 import { DataTable } from 'primereact/datatable';
 import { Column } from 'primereact/column';
-
 
 export default class TablaMercados extends React.Component {
 
@@ -21,12 +21,17 @@ export default class TablaMercados extends React.Component {
             <Column field="DineroOver" header="Dinero Over"></Column>
             <Column field="DineroUnder" header="Dinero Under"></Column>
             <Column field="EventoId" header="Evento ID"></Column>
-            <Column field="Bloqueado" header="Bloqueado"></Column>
+            <Column body={this.estado} field="Bloqueado" header="Bloqueado"></Column>
+          
           </DataTable>
         </div>
         <button onClick={this.getMercados}> actualizaar</button>
       </>
     )
+  }
+   estado=(rowData)=>{
+    return (<>{rowData.Bloqueado?<p>si</p>:<p>no</p>}</>)
+
   }
 
   getMercados = () => {
