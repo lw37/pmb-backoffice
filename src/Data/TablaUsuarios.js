@@ -81,7 +81,9 @@ export default class TablaUsuarios extends React.Component {
   }
 
   delUsuario = (id) => {
-    axios.delete("https://localhost:44315/api/usuarios/" + id);
+    axios.delete("https://localhost:44315/api/usuarios/" + id).then(res=>{
+      this.getUsuarios();
+    })
   }
 
   getUsuarios = () => {
