@@ -2,7 +2,7 @@ import React from 'react';
 import { TabMenu } from 'primereact/tabmenu';
 import { InputText } from 'primereact/inputtext';
 
-export default class MyInput extends React.Component{
+export default class InputLabel extends React.Component{
     render() {
         return (
             <>

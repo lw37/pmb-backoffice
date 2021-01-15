@@ -5,12 +5,16 @@ import { Column } from 'primereact/column';
 import { SelectButton } from 'primereact/selectbutton';
 import { Calendar } from 'primereact/calendar';
 import { InputText } from "primereact/inputtext";
+import InputLabel   from '../Components/InputLabel';
 import Moment from 'moment';
 export default class TablaEventos extends React.Component {
 
   state = {
     eventos: [],
     lista:[],
+    textoLocal:"",
+    textoVisitante:"",
+    textoFecha:"",
     nombreEquipo: "",
     visitante: "",
     fechaEvento: "",
@@ -20,8 +24,17 @@ export default class TablaEventos extends React.Component {
   render() {
     return (
       <>
+
         <SelectButton options={this.state.menu} onChange={(e) => this.setState({ menuNom: e.value })} />
-        {this.state.menuNom === "Lista" ? <div>
+        {this.state.menuNom === "Lista" ? 
+        <div>
+          <div>
+            <label>Fecha:</label>
+          <Calendar  id="icon" showIcon onChange={e=>{ this.setState({ textoFecha: Moment(e.target.value).format('YYYY-MM-DD').toString()},()=>this.filtro())}} />
+          </div>
+          <InputLabel labe="Equipo Local:" callback={this.filtroLocal}/>
+          <InputLabel labe="Equipo Visitante:" callback={this.filtroVisitante}/>
+
           <DataTable value={this.state.lista}>
           <Column field="EventoId" header="ID"></Column>
             <Column field="NombreEquipo" header="Equipo Local"></Column>
@@ -32,14 +45,11 @@ export default class TablaEventos extends React.Component {
           <button onClick={this.getEventos}> actualizar</button>
         </div>
           :
-
-
-
           <div>
             <p>Crear nuevo evento</p>
             <div >
               <label>Fecha:</label>
-              <Calendar  id="icon" showIcon onChange={e=>this.setState({ fechaEvento: Moment(e.target.value).format('YYYY-MM-DD').toString()},()=>console.log(this.state.fechaEvento))} />
+              <Calendar  id="icon" showIcon onChange={e=>this.setState({ fechaEvento: Moment(e.target.value).format('YYYY-MM-DD').toString()},()=>console.log('Crear '+this.state.fechaEvento))} />
             </div>
             <div className="p-inputgroup">
               <span className="p-inputgroup-addon">
@@ -59,13 +69,44 @@ export default class TablaEventos extends React.Component {
       </>
     )
   }
+  filtroLocal=(e)=>{
+    this.setState({ textoLocal: e.target.value }, () => { this.filtro() });
+  }
+  filtroVisitante=(e)=>{
+    this.setState({ textoVisitante: e.target.value }, () => { this.filtro() });
+  }
+
+
+  filtro=()=>{
+    if (this.state.textoLocal !== "") {
+      const lista = this.state.eventos.filter(a => a.NombreEquipo === this.state.textoLocal)
+      
+      this.setState({ lista });
+    } else if (this.state.textoVisitante !== "") {
+      const lista = this.state.eventos.filter(a => a.Visitante === this.state.textoVisitante)
+      this.setState({ lista });
+    }
+    else if (this.state.textoFecha !== "") {
+      const lista = this.state.eventos.filter(a => a.FechaEvento === this.state.textoFecha)
+      console.log("filtro "+this.state.textoFecha);
+      this.setState({ lista });
+    } else {
+      this.getEventos();
+    }
+  }
   
   getFecha=(rowData)=>{
     return(
     <div>
-     <button>Eliminar Evento</button>
+     <button onClick={() => { this.delEvento(rowData.EventoId) }} >Eliminar Evento</button>
     <Calendar  id="icon" showIcon onChange={e=>{this.updateEvento(rowData,e.target.value)}} />
     </div>)
+  }
+
+  delEvento=(id)=>{
+    axios.delete("https://localhost:44315/api/eventos/" + id).then(res=>{
+      this.getEventos();
+    })
   }
 
   updateEvento=(evento,fecha)=>{

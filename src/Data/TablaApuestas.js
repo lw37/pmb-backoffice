@@ -3,7 +3,7 @@ import axios from 'axios';
 import { DataTable } from 'primereact/datatable';
 import { Column } from 'primereact/column';
 import { InputText } from 'primereact/inputtext';
-import MyInput   from '../Components/InputLabel';
+import InputLabel   from '../Components/InputLabel';
 
 export default class TablaApuestas extends React.Component {
 
@@ -18,7 +18,7 @@ export default class TablaApuestas extends React.Component {
     return (
       <>
         <div>
-          <MyInput labe="USAGUDg:" callback={this.filtroEmail}></MyInput>
+          <InputLabel labe="USAGUDg:" callback={this.filtroEmail}/>
           <label> Email: </label>
           <span className="p-input-icon-left">
             <i className="pi pi-search" />
