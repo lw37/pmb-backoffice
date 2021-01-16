@@ -18,22 +18,9 @@ export default class TablaApuestas extends React.Component {
     return (
       <>
         <div>
-          <InputLabel labe="USAGUDg:" callback={this.filtroEmail}/>
-          <label> Email: </label>
-          <span className="p-input-icon-left">
-            <i className="pi pi-search" />
-            <InputText onChange={this.filtroEmail} placeholder="Search" />
-          </span>
-          <label> Mercado: </label>
-          <span className="p-input-icon-left">
-            <i className="pi pi-search" />
-            <InputText onChange={this.filtroMercado} placeholder="Search" />
-          </span>
-          <label> Evento: </label>
-          <span className="p-input-icon-left">
-            <i className="pi pi-search" />
-            <InputText onChange={this.filtroEvento} placeholder="Search" />
-          </span>
+          <InputLabel labe="Email:" callback={this.filtroEmail}/>
+          <InputLabel labe="Mercado:" callback={this.filtroEmail}/>
+          <InputLabel labe="Evento:" callback={this.filtroEmail}/>
           <DataTable value={this.state.lista}>
             <Column field="apuestaId" header="ID"></Column>
             <Column body={this.estado} field="tipoApuesta" header="Tipo de Apuestas"></Column>
@@ -50,16 +37,16 @@ export default class TablaApuestas extends React.Component {
     )
   }
 
-  filtroEmail = (evento) => {
-    this.setState({ textoEmail: evento.target.value }, () => { this.filtro() });
+  filtroEmail = (e) => {
+    this.setState({ textoEmail: e.target.value }, () => { this.filtro() });
   }
 
-  filtroMercado = (evento) => {
-    this.setState({ textoMercado: evento.target.value }, () => { this.filtro() });
+  filtroMercado = (e) => {
+    this.setState({ textoMercado: e.target.value }, () => { this.filtro() });
   }
 
-  filtroEvento = (evento) => {
-    this.setState({ textoEvento: evento.target.value }, () => { this.filtro() });
+  filtroEvento = (e) => {
+    this.setState({ textoEvento: e.target.value }, () => { this.filtro() });
   }
 
   filtro = () => {
@@ -79,25 +66,19 @@ export default class TablaApuestas extends React.Component {
 
   }
 
-
   estado = (rowData) => {
     return (<>{rowData.tipoApuesta ? <p>Over</p> : <p>Under</p>}</>)
   }
 
   getApuestas = () => {
-    const promise = axios.get("https://localhost:44315/api/Apuestas");
-    const promiseResult = promise.then(res => {
+  axios.get("https://localhost:44315/api/Apuestas").then(res => {
       const apuestas = res.data;
       this.setState({ apuestas, lista: apuestas }, () => { console.log("Estos son apuestas"); console.log(apuestas); })
     });
   }
 
   componentDidMount() {
-    const promise = axios.get("https://localhost:44315/api/Apuestas");
-    const promiseResult = promise.then(res => {
-      const apuestas = res.data;
-      this.setState({ apuestas, lista: apuestas }, () => { console.log("Estos son apuestas"); console.log(apuestas); })
-    });
+   this.getApuestas(); 
   }
 
 }

@@ -3,9 +3,9 @@ import axios from 'axios';
 import { DataTable } from 'primereact/datatable';
 import { Column } from 'primereact/column';
 import { InputText } from 'primereact/inputtext';
+import InputLabel   from '../Components/InputLabel';
 
 export default class TablaUsuarios extends React.Component {
-
   state = {
     textoApellido: "",
     usuarios: [],
@@ -13,24 +13,13 @@ export default class TablaUsuarios extends React.Component {
     textoEmail: "",
     textoNombre: "",
   }
+
   render() {
     return (
       <>
-        <label> Email: </label>
-        <span className="p-input-icon-left">
-          <i className="pi pi-search" />
-          <InputText onChange={this.filtroEmail} placeholder="Search" />
-        </span>
-        <label> Nombre: </label>
-        <span className="p-input-icon-left">
-          <i className="pi pi-search" />
-          <InputText onChange={this.filtroNombre} placeholder="Search" />
-        </span>
-        <label> Apellido: </label>
-        <span className="p-input-icon-left">
-          <i className="pi pi-search" />
-          <InputText onChange={this.filtroApellido} placeholder="Search" />
-        </span>
+       <InputLabel labe="Email:" callback={this.filtroEmail}/>
+       <InputLabel labe="Nombre:" callback={this.filtroNombre}/>
+       <InputLabel labe="Apellido:" callback={this.filtroApellido}/>
         <div>
           <DataTable value={this.state.lista}>
             <Column field="Email" header="Email"></Column>
@@ -46,16 +35,16 @@ export default class TablaUsuarios extends React.Component {
     )
   }
 
-  filtroEmail = (evento) => {
-    this.setState({ textoEmail: evento.target.value }, () => { this.filtro() });
+  filtroEmail = (e) => {
+    this.setState({ textoEmail: e.target.value }, () => { this.filtro() });
   }
 
-  filtroNombre = (evento) => {
-    this.setState({ textoNombre: evento.target.value }, () => { this.filtro() });
+  filtroNombre = (e) => {
+    this.setState({ textoNombre: e.target.value }, () => { this.filtro() });
   }
 
-  filtroApellido = (evento) => {
-    this.setState({ textoApellido: evento.target.value }, () => { this.filtro() });
+  filtroApellido = (e) => {
+    this.setState({ textoApellido: e.target.value }, () => { this.filtro() });
   }
 
   filtro = () => {
@@ -72,12 +61,10 @@ export default class TablaUsuarios extends React.Component {
     } else {
       this.getUsuarios();
     }
-
   }
 
   eliminar = (rowData) => {
     return <><button onClick={() => { this.delUsuario(rowData.UsuarioId) }}>eliminar</button></>
-
   }
 
   delUsuario = (id) => {
@@ -94,9 +81,7 @@ export default class TablaUsuarios extends React.Component {
       this.setState({ usuarios, lista: usuarios }, () => { console.log("Estos son usuarios"); console.log(usuarios); })
     });
   }
-  componentDidUpdate() {
 
-  }
   componentDidMount() {
     this.getUsuarios();
   }

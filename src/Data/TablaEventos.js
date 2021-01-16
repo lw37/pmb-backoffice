@@ -7,6 +7,7 @@ import { Calendar } from 'primereact/calendar';
 import { InputText } from "primereact/inputtext";
 import InputLabel   from '../Components/InputLabel';
 import Moment from 'moment';
+
 export default class TablaEventos extends React.Component {
 
   state = {
@@ -28,13 +29,10 @@ export default class TablaEventos extends React.Component {
         <SelectButton options={this.state.menu} onChange={(e) => this.setState({ menuNom: e.value })} />
         {this.state.menuNom === "Lista" ? 
         <div>
-          <div>
-            <label>Fecha:</label>
+          <label>Fecha:</label>
           <Calendar  id="icon" showIcon onChange={e=>{ this.setState({ textoFecha: Moment(e.target.value).format('YYYY-MM-DD').toString()},()=>this.filtro())}} />
-          </div>
           <InputLabel labe="Equipo Local:" callback={this.filtroLocal}/>
           <InputLabel labe="Equipo Visitante:" callback={this.filtroVisitante}/>
-
           <DataTable value={this.state.lista}>
           <Column field="EventoId" header="ID"></Column>
             <Column field="NombreEquipo" header="Equipo Local"></Column>
@@ -66,7 +64,6 @@ export default class TablaEventos extends React.Component {
             <button onClick={this.addEvento}> Añadir</button>
           </div>
         }
-
       </>
     )
   }
@@ -82,7 +79,6 @@ export default class TablaEventos extends React.Component {
   filtro=()=>{
     if (this.state.textoLocal !== "") {
       const lista = this.state.eventos.filter(a => a.NombreEquipo === this.state.textoLocal)
-      
       this.setState({ lista });
     } else if (this.state.textoVisitante !== "") {
       const lista = this.state.eventos.filter(a => a.Visitante === this.state.textoVisitante)
@@ -126,7 +122,6 @@ export default class TablaEventos extends React.Component {
     const DineroUnder=100;
     const Bloqueado=true;
     const EventoId=id;
-
     axios.get("https://localhost:44315/api/mercados").then(res=>{
       const mercadosRe= res.data.filter(m=>m.EventoId===id);
       console.log(mercadosRe);
@@ -141,26 +136,21 @@ export default class TablaEventos extends React.Component {
       }else{
         console.log("Ya existe mercados de este evento.")
       }
-
     })
   }
 
   updateEvento=(evento,fecha)=>{
     const FechaEvento= Moment(fecha).format('YYYY-MM-DD').toString();
-
     axios.put("https://localhost:44315/api/eventos/"+evento.EventoId+"?fecha="+FechaEvento).then(()=>{this.getEventos()
   })
   }
 
   addEvento = () => {
-
     let FechaEvento=this.state.fechaEvento;
     let NombreEquipo=this.state.nombreEquipo;
     let Visitante=this.state.visitante;
     let EventoId;
-   
     if( FechaEvento!==null && NombreEquipo!=="" && Visitante!==""){
-      
       let evento={EventoId,FechaEvento,NombreEquipo,Visitante}
       axios.post("https://localhost:44315/api/eventos",evento ).then(console.log(evento))
     }else{
@@ -169,8 +159,7 @@ export default class TablaEventos extends React.Component {
   }
 
   getEventos = () => {
-    const promise = axios.get("https://localhost:44315/api/eventos");
-    const promiseResult = promise.then(res => {
+   axios.get("https://localhost:44315/api/eventos").then(res => {
       const eventos = res.data.map(e=>{
         e.FechaEvento=Moment(e.FechaEvento).format('YYYY-MM-DD');
         return e;
@@ -182,10 +171,6 @@ export default class TablaEventos extends React.Component {
     });
   }
 
-
-  componentDidUpdate() {
-
-  }
   componentDidMount() {
     this.getEventos();
   }

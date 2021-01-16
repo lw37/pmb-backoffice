@@ -4,7 +4,6 @@ import { DataTable } from 'primereact/datatable';
 import { Column } from 'primereact/column';
 
 export default class TablaMercados extends React.Component {
-
   state = {
     mercados: [],
     lista: []
@@ -33,14 +32,16 @@ export default class TablaMercados extends React.Component {
       <div><p>si</p><button onClick={()=>this.desbloquearMercado(rowData)}>Desbloquear</button></div>
       : <div><p>no</p><button onClick={()=>this.bloquearMercado(rowData)}>Bloquear</button></div>}
     </>)
-
   }
+
   desbloquearMercado=(mercado)=>{
     axios.put("https://localhost:44315/api/Mercados/"+mercado.MercadoId+"?bloqueado="+false).then(()=>this.getMercados())
   }
+
   bloquearMercado=(mercado)=>{
     axios.put("https://localhost:44315/api/Mercados/"+mercado.MercadoId+"?bloqueado="+true).then(()=>this.getMercados())
   }
+  
   getMercados = () => {
     const promise = axios.get("https://localhost:44315/api/Mercados");
     const promiseResult = promise.then(res => {

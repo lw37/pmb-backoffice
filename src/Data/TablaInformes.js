@@ -2,12 +2,10 @@ import React from 'react';
 import { Chart } from 'primereact/chart';
 import axios from 'axios';
 export default class TablaInformes extends React.Component {
-
     state = {
         usuarios: [],
         apuestas: []
     }
-
     render() {
         const usuarios = {
             labels: ['Lunes', 'Martes', 'Miercoles', 'Jueves', 'Viserves', 'Sabados', 'Domingos'],
@@ -70,7 +68,6 @@ export default class TablaInformes extends React.Component {
             const usuarios = this.dividirUsuarios(res.data);
             this.setState({ usuarios }, () => { console.log(new Date(this.state.usuarios[3].FechaAlta).getDay()); })
         });
-
     }
 
     dividirUsuarios = (usuarios) => {
