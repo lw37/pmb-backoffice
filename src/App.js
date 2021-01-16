@@ -29,9 +29,7 @@ class App extends React.Component {
         {this.state.MenuNom === 'Apuestas' &&<TablaApuestas></TablaApuestas>}
         {this.state.MenuNom === 'Mercados' && <TablaMercados></TablaMercados>}
         {this.state.MenuNom === 'Eventos' && <TablaEventos></TablaEventos>}
-        {this.state.MenuNom === 'Informes' ? <Fragment>
-          <p>Aqui es tabla de Informes</p>
-        </Fragment> : null}
+        {this.state.MenuNom === 'Informes' && <TablaInformes></TablaInformes>}
       </>
     );
   }

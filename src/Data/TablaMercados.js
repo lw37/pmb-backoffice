@@ -7,12 +7,13 @@ export default class TablaMercados extends React.Component {
 
   state = {
     mercados: [],
+    lista: []
   }
   render() {
     return (
       <>
         <div>
-          <DataTable value={this.state.mercados}>
+          <DataTable value={this.state.lista}>
             <Column field="MercadoId" header="ID"></Column>
             <Column field="TipoMercado" header="Tipo de Mercado"></Column>
             <Column field="CuotaOver" header="Cuota Over"></Column>
@@ -20,33 +21,36 @@ export default class TablaMercados extends React.Component {
             <Column field="DineroOver" header="Dinero Over"></Column>
             <Column field="DineroUnder" header="Dinero Under"></Column>
             <Column field="EventoId" header="Evento ID"></Column>
-            <Column body={this.estado} field="Bloqueado" header="Bloqueado"></Column>
-          
+            <Column body={this.estado} field="Bloqueado" header="Bloquear"></Column>
           </DataTable>
         </div>
         <button onClick={this.getMercados}> actualizaar</button>
       </>
     )
   }
-   estado=(rowData)=>{
-    return (<>{rowData.Bloqueado?<p>si</p>:<p>no</p>}</>)
+  estado = (rowData) => {
+    return (<>{rowData.Bloqueado ?
+      <div><p>si</p><button onClick={()=>this.desbloquearMercado(rowData)}>Desbloquear</button></div>
+      : <div><p>no</p><button onClick={()=>this.bloquearMercado(rowData)}>Bloquear</button></div>}
+    </>)
 
   }
-
+  desbloquearMercado=(mercado)=>{
+    axios.put("https://localhost:44315/api/Mercados/"+mercado.MercadoId+"?bloqueado="+false).then(()=>this.getMercados())
+  }
+  bloquearMercado=(mercado)=>{
+    axios.put("https://localhost:44315/api/Mercados/"+mercado.MercadoId+"?bloqueado="+true).then(()=>this.getMercados())
+  }
   getMercados = () => {
     const promise = axios.get("https://localhost:44315/api/Mercados");
     const promiseResult = promise.then(res => {
       const mercados = res.data;
-      this.setState({ mercados }, () => { console.log("Estos son mercados"); console.log(mercados); })
+      this.setState({ mercados, lista:mercados }, () => { console.log("Estos son mercados"); console.log(mercados); })
     });
   }
 
-  componentDidMount() {
-    const promise = axios.get("https://localhost:44315/api/Mercados");
-    const promiseResult = promise.then(res => {
-      const mercados = res.data;
-      this.setState({ mercados }, () => { console.log("Estos son mercados"); console.log(mercados); })
-    });
+  componentDidMount(){
+    this.getMercados();
   }
 
 }

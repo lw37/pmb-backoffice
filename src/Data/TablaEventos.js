@@ -147,12 +147,8 @@ export default class TablaEventos extends React.Component {
 
   updateEvento=(evento,fecha)=>{
     const FechaEvento= Moment(fecha).format('YYYY-MM-DD').toString();
-    const EventoId=evento.EventoId;
-    const NombreEquipo=evento.NombreEquipo;
-    const Visitante=evento.Visitante;
-    const evento1={EventoId,FechaEvento,NombreEquipo,Visitante}
-    console.log(evento1);
-    axios.put("https://localhost:44315/api/eventos/"+evento1.EventoId,evento1).then(()=>{this.getEventos()
+
+    axios.put("https://localhost:44315/api/eventos/"+evento.EventoId+"?fecha="+FechaEvento).then(()=>{this.getEventos()
   })
   }
 
