@@ -41,6 +41,7 @@ export default class TablaEventos extends React.Component {
             <Column field="Visitante" header="Equipo Visitante"></Column>
             <Column field="FechaEvento" header="Fecha de Evento"></Column>
             <Column body={this.getFecha} header="Cambiar Fecha"></Column>
+            <Column body={this.altaMercado} header="Dar de Alta Mercados"></Column>
           </DataTable>
           <button onClick={this.getEventos}> actualizar</button>
         </div>
@@ -69,13 +70,14 @@ export default class TablaEventos extends React.Component {
       </>
     )
   }
+  
   filtroLocal=(e)=>{
     this.setState({ textoLocal: e.target.value }, () => { this.filtro() });
   }
+  
   filtroVisitante=(e)=>{
     this.setState({ textoVisitante: e.target.value }, () => { this.filtro() });
   }
-
 
   filtro=()=>{
     if (this.state.textoLocal !== "") {
@@ -109,6 +111,40 @@ export default class TablaEventos extends React.Component {
     })
   }
 
+  altaMercado=(rowData)=>{
+    return  <> <button onClick={()=>{this.addMercado(rowData.EventoId)}}>Alta Mercado</button> </>
+  }
+
+  addMercado=(id)=>{
+    const MercadoId=undefined;
+    const TipoMercado1=1.5;
+    const TipoMercado2=2.5;
+    const TipoMercado3=3.5;
+    const CuotaOver=1.9;
+    const CuotaUnder=1.9;
+    const DineroOver=100;
+    const DineroUnder=100;
+    const Bloqueado=true;
+    const EventoId=id;
+
+    axios.get("https://localhost:44315/api/mercados").then(res=>{
+      const mercadosRe= res.data.filter(m=>m.EventoId===id);
+      console.log(mercadosRe);
+      if (mercadosRe.length===0){
+        const mercado1={MercadoId,TipoMercado1,CuotaOver,CuotaUnder,DineroOver,DineroUnder,Bloqueado,EventoId};
+        const mercado2={MercadoId,TipoMercado2,CuotaOver,CuotaUnder,DineroOver,DineroUnder,Bloqueado,EventoId};
+        const mercado3={MercadoId,TipoMercado3,CuotaOver,CuotaUnder,DineroOver,DineroUnder,Bloqueado,EventoId};
+        const mercados=[mercado1,mercado2,mercado3];
+        for (let i = 0; i < mercados.length; i++) {
+         axios.post("https://localhost:44315/api/mercados",mercados[i]).then(console.log(mercados[i]))
+        }
+      }else{
+        console.log("Ya existe mercados de este evento.")
+      }
+
+    })
+  }
+
   updateEvento=(evento,fecha)=>{
     const FechaEvento= Moment(fecha).format('YYYY-MM-DD').toString();
     const EventoId=evento.EventoId;
@@ -117,7 +153,6 @@ export default class TablaEventos extends React.Component {
     const evento1={EventoId,FechaEvento,NombreEquipo,Visitante}
     console.log(evento1);
     axios.put("https://localhost:44315/api/eventos/"+evento1.EventoId,evento1).then(()=>{this.getEventos()
- 
   })
   }
 
