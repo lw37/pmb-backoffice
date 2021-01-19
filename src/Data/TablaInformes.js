@@ -3,8 +3,8 @@ import { Chart } from 'primereact/chart';
 import axios from 'axios';
 export default class TablaInformes extends React.Component {
     state = {
-        usuarios: [],
-        apuestas: []
+        usuariosData: [],
+        apuestasData: []
     }
     render() {
         const usuarios = {
@@ -12,7 +12,7 @@ export default class TablaInformes extends React.Component {
             datasets: [
                 {
                     label: 'Usuarios',
-                    data: this.state.usuarios,
+                    data: this.state.usuariosData,
                     fill: false,
                     borderColor: '#42A5F5'
                 }
@@ -23,7 +23,7 @@ export default class TablaInformes extends React.Component {
             datasets: [
                 {
                     label: 'Apuestas',
-                    data: this.state.apuestas,
+                    data: this.state.apuestasData,
                     fill: false,
                     borderColor: '#42A5F5'
                 }
@@ -47,7 +47,7 @@ export default class TablaInformes extends React.Component {
         const promise = axios.get("https://localhost:44315/api/Apuestas");
         const promiseResult = promise.then(res => {
             const apuestas = this.dividirApuestas(res.data);
-            this.setState({ apuestas }, () => { console.log("Estos son apuestas"); console.log(apuestas); })
+            this.setState({ apuestasData }, () => { console.log("Estos son apuestas"); console.log(apuestas); })
         });
     }
 
@@ -63,10 +63,11 @@ export default class TablaInformes extends React.Component {
         console.log(apu)
         return apu;
     }
+
     getUsuarios = () => {
         axios.get("https://localhost:44315/api/usuarios").then(res => {
             const usuarios = this.dividirUsuarios(res.data);
-            this.setState({ usuarios }, () => { console.log(new Date(this.state.usuarios[3].FechaAlta).getDay()); })
+            this.setState({ usuariosData }, () => { console.log(new Date(this.state.usuarios[3].FechaAlta).getDay()); })
         });
     }
 
